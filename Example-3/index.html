@@ -4,33 +4,29 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Custom Element</title>
-    <style>
-        button{
-            padding: 0.5rem 2rem;
-            outline: none;
-            background: #101010;
-            color: yellow;
-            border: 1px solid red;
-            border-radius: 0.25rem;
-            cursor: pointer;
-        }
-    </style>
+    <title>Web Component | Template</title>
 </head>
 <body>
-    <div>
-        <h3>HTML Button</h3>
-        <button>Click me</button>
-        <hr>
-        <h3>Custom Element</h3>
-        <my-button>Click me</my-button>
-    </div>
+    <h1>Web Component: Template</h1>
+
+    <todo-item checked="true">Item One
+        <small slot="small">Small Text</small>
+    </todo-item>
+    <todo-item checked="false" disable="true">Item Two</todo-item>
+    <todo-item checked="true">Item Thee</todo-item>
+
     <script src="./custom.js"></script>
     <script>
-        const btn = document.querySelector("my-button");
-        btn.addEventListener('click', function () {
-            alert("This is Custom Button !!");
-        });
+        const firstItem = document.querySelector("todo-item");
+        let checked = true;
+
+        setInterval(()=>{
+            checked =! checked
+            firstItem.setAttribute('checked', checked);
+        },1000)
     </script>
 </body>
 </html>
+
+<!-- website -->
+<!-- https://stenciljs.com/ -->

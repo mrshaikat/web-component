@@ -1,36 +1,68 @@
-class MyButton extends HTMLElement{
+const template = document.createElement('template');
+template.innerHTML = `
+<style>
+div{
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid green;
+    background-color: #20C073;
+    color: #101010;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+ label{
+    font-family: Arial, Helvetica, sans-serif;
+    color: #101010;
+    font-weight: 700;
+ }
+
+ span{
+    margin-left: auto;
+ }
+</style>
+
+<div>
+    <input type="checkbox"/>
+    <label>
+       <slot></slot>
+    </label>
+    <span>
+        <slot name="small"></slot>
+    </span>
+</div>
+`;
+
+class TodoItem extends HTMLElement{
     constructor(){
         super();
         this.shadow = this.attachShadow({mode: "open"});
+        this.shadow.append(template.content.cloneNode(true));
+        this.checkbox = this.shadow.querySelector('input');
     }
 
     connectedCallback(){
-        const button = document.createElement("button");
-        button.innerHTML = this.innerHTML;
-        this.shadow.append(this.#createStyle());
-        this.shadow.append(button);
+       
     }
 
-    attributeChangedCallback(){}
+    static get observedAttributes(){
+        return ['checked'];
+    }
+
+    attributeChangedCallback(name, _oldValue, newValue){
+        if(name === 'checked'){
+            this.#updateChecked(newValue);
+        }
+    }
+
+
+    #updateChecked(value){
+        this.checkbox.checked = value === 'true' ? true : false;
+    }
 
     disconnectedCallback(){}
 
-
-    #createStyle(){
-        const style = document.createElement('style');
-        style.innerHTML = `
-        button{
-            padding: 0.5rem 2rem;
-            outline: none;
-            background: skyblue;
-            color: black;
-            border: 1px solid #fff;
-            border-radius: 0.25rem;
-            cursor: pointer;
-        }
-        `;
-        return style;
-    }
 }
 
-customElements.define("my-button", MyButton);
+customElements.define("todo-item", TodoItem);
